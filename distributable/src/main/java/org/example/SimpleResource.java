@@ -31,7 +31,7 @@ public class SimpleResource {
         return bf.createObjectBuilder()
                     .add("hostname", hostname)
                     .add("session-id", session.getId())
-                    .add("value", 0)
+                    .add("value", (Integer) session.getAttribute("TEST"))
                 .build();
     }
 
@@ -56,6 +56,9 @@ public class SimpleResource {
         HttpSession session = request.getSession(true);
         String hostname = System.getenv("HOSTNAME") != null ?  System.getenv("HOSTNAME") : "UNKNOWN";
         Integer value = (Integer) session.getAttribute("TEST");
+        if (value == null) {
+            value = -1;
+        }
         session.setAttribute("TEST", ++value);
 
         return bf.createObjectBuilder()
